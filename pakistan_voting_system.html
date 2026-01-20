@@ -473,7 +473,7 @@
         let fingerprintScanned = false;
         let votedCNICs = new Set();
 
-        // Fingerprint scanning
+
         document.getElementById('fingerprintBox').addEventListener('click', function() {
             if (!fingerprintScanned) {
                 this.innerHTML = '<div style="text-align: center;"><div style="font-size: 3em;">⏳</div><div style="margin-top: 10px; color: #7f8c8d;">Scanning...</div></div>';
@@ -487,7 +487,7 @@
             }
         });
 
-        // Form validation
+      
         function checkFormComplete() {
             const cnic = document.getElementById('cnic').value;
             const district = document.getElementById('district').value;
@@ -502,7 +502,7 @@
         document.getElementById('district').addEventListener('change', checkFormComplete);
         document.getElementById('party').addEventListener('change', checkFormComplete);
 
-        // Vote submission
+     
         document.getElementById('voteForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -522,7 +522,7 @@
             updateDisplay();
             showNotification();
             
-            // Reset form
+    
             this.reset();
             fingerprintScanned = false;
             document.getElementById('fingerprintBox').classList.remove('scanned');
@@ -533,13 +533,13 @@
         function updateDisplay() {
             const total = votes.PTI + votes.PMLN + votes.PPP || 1;
             
-            // Update vote counts
+     
             document.getElementById('ptiVotes').textContent = votes.PTI.toLocaleString();
             document.getElementById('pmlnVotes').textContent = votes.PMLN.toLocaleString();
             document.getElementById('pppVotes').textContent = votes.PPP.toLocaleString();
             document.getElementById('totalVotes').textContent = total.toLocaleString();
             
-            // Update percentages and progress bars
+   
             const ptiPercent = ((votes.PTI / total) * 100).toFixed(1);
             const pmlnPercent = ((votes.PMLN / total) * 100).toFixed(1);
             const pppPercent = ((votes.PPP / total) * 100).toFixed(1);
@@ -552,7 +552,7 @@
             document.getElementById('pmlnPercent').textContent = pmlnPercent + '%';
             document.getElementById('pppPercent').textContent = pppPercent + '%';
             
-            // Update district breakdown
+     
             updateDistrictBreakdown();
         }
 
@@ -582,40 +582,36 @@
             }, 3000);
         }
 
-        // Random vote simulation - ONLY INCREASES
+
         function simulateRandomVotes() {
             const parties = ['PTI', 'PMLN', 'PPP'];
             const districtNames = Object.keys(districts);
             
             setInterval(() => {
-                // Randomly pick party and district
+
                 const randomParty = parties[Math.floor(Math.random() * parties.length)];
                 const randomDistrict = districtNames[Math.floor(Math.random() * districtNames.length)];
                 
-                // ONLY INCREMENT - never decrease
                 const increment = Math.floor(Math.random() * 3) + 1;
                 votes[randomParty] += increment;
                 districts[randomDistrict][randomParty] += Math.floor(Math.random() * 2) + 1;
                 
                 updateDisplay();
                 
-                // Show notification randomly (30% chance)
                 if (Math.random() < 0.3) {
                     showNotification(`New vote from ${randomDistrict} for ${randomParty}!`);
                 }
-            }, 3000); // Updates every 3 seconds
+            }, 3000); 
         }
 
-        // Simulate vote submissions with form flashing
+
         function simulateVoteSubmissions() {
             const parties = ['PTI', 'PMLN', 'PPP'];
             const districtNames = Object.keys(districts);
             const authSection = document.querySelector('.auth-section');
             
             setInterval(() => {
-                // Random chance to show vote submission animation
                 if (Math.random() < 0.4) {
-                    // Flash the auth section
                     authSection.style.boxShadow = '0 0 30px rgba(0, 166, 81, 0.6)';
                     authSection.style.transform = 'scale(1.02)';
                     authSection.style.transition = 'all 0.3s';
@@ -625,17 +621,14 @@
                         authSection.style.transform = 'scale(1)';
                     }, 500);
                     
-                    // Show which party got the vote
                     const randomParty = parties[Math.floor(Math.random() * parties.length)];
                     const randomDistrict = districtNames[Math.floor(Math.random() * districtNames.length)];
                     
-                    // Create floating vote indicator
                     createFloatingVote(randomParty, randomDistrict);
                 }
-            }, 5000); // Check every 5 seconds
+            }, 5000); 
         }
 
-        // Create floating vote animation
         function createFloatingVote(party, district) {
             const floater = document.createElement('div');
             floater.style.position = 'fixed';
@@ -655,19 +648,16 @@
             
             document.body.appendChild(floater);
             
-            // Animate up and fade
             setTimeout(() => {
                 floater.style.transform = 'translateY(-100px)';
                 floater.style.opacity = '0';
             }, 100);
             
-            // Remove after animation
             setTimeout(() => {
                 document.body.removeChild(floater);
             }, 1700);
         }
 
-        // Initialize
         updateDistrictBreakdown();
         simulateRandomVotes();
         simulateVoteSubmissions();
